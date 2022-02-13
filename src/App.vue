@@ -1,32 +1,27 @@
 <template>
-  <div id="app">
-    <div id="nav">
+  <div>
+    <div id="nav" v-if="account">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <a @click="logout">Logout</a>
     </div>
-    <router-view />
+    <div>
+      <router-view />
+    </div>
   </div>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<script>
+import { accountService } from "@/_services";
+export default {
+  data() {
+    return {
+      account: null,
+    };
+  },
+  created() {
+    accountService.account.subscribe((x) => (this.account = x));
+  },
+  methods: {
+    logout: accountService.logout,
+  },
+};
+</script>
